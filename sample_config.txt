@@ -1,0 +1,31 @@
+		{
+				module: "MMM-SleepWake",
+			  config: {			
+						delay: 2, // minutes , default = 15 minutes
+						"source": 
+								"External",
+								// choices are PIR  -- uses the Raspberry pi hardware dection pins and PIR sensor
+								//						 	or 
+								//						 External  -- uses some external source for motion detection, like a video camera
+								//											 -- see the github motion project 
+								// mode
+								// HOW to go to sleep
+								//    use hardware(hdmi), software (dpms), or simulate (hide content leaving black screen)
+						"mode":"hide",
+								// mode choices are 
+								//  'pi': 
+								//				executes the tvservice command 
+								//
+								//  'dpms'
+								//				executes the 'xset dpms force' command 
+								//
+								//  'hide'
+								//				hides all modules. modules hidden when the sleep is issued will be hidden on wakeup
+								//				for energyStar monitors and TVs, this allows the screen to remain powered on so it will come alive on movement
+								//
+						detectionDir: '/home/odroid/smart-mirror/motion',
+  							// detectionDir: folder containing externally generated file when motion starts
+	  						//								will be created if needed
+		  					// detectionFile:  filename generated for motion start. defalt = 'detected'
+				}
+		},
