@@ -37,11 +37,12 @@ you can use the github motion project to provide motion detection events, this m
 
 ## Config Options
 
-| **Option** | **Default** | **Description** |
+| **Option** | **Default** | **Description** | **Info** | 
 | --- | --- | --- |
 | `source` | REQUIRED | 'external' |
-| `delay` | OPTIONAL | `15` | amaount of time with no motion before sleeping|
-| `mode` | OPTIONAL | 'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source
+| `delay` | OPTIONAL | `15` | amount of time with no motion before sleeping|
+| `mode` | OPTIONAL | 
+|        |          |'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source
 |  |  | 'DPMS' |  use the exec DMPS command to turn off the monitor source (not on pi, or not hdmi)
 |  |  | 'HIDE' |  hide all module content, if display is on EnergyStar device that shows ugly screen no signal screen for the other two choices
 | `detectionDir` | OPTIONAL | '/home/{userid}/MagicMirror/modules/MMM-SleepWake/motion'  |  the path to the folde that will received the motion notification files from the external_motion script
@@ -52,6 +53,7 @@ you can use the github motion project to provide motion detection events, this m
 configure the github motion project (or whatever method you want to detect motion) to write a file for motion start or end. 
 
 like this (motion.conf lines)
+
 *# Command to be executed when an event starts. (default: none)
 *# An event starts at first motion detected after a period of no motion defined by event_gap
 on_event_start /home/{userid}/MagicMirror/modules/MMM-SleepWake/external_motion started
