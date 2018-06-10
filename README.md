@@ -37,11 +37,11 @@ you can use the github motion project to provide motion detection events, this m
 
 ## Config Options
 
-| **Option** | **Default** | **Description** | **Info** | 
-| --- | --- | --- |
-| `source` | REQUIRED | 'external' |
+| **Option** | **Default** | **Description** | **Info** 
+| --- | --- | --- | --- |
+| `source` | REQUIRED | 'external' | |
 | `delay` | OPTIONAL | `15` | amount of time with no motion before sleeping|
-| `mode` | OPTIONAL | 
+| `mode` | OPTIONAL | |
 |        |          |'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source
 |  |  | 'DPMS' |  use the exec DMPS command to turn off the monitor source (not on pi, or not hdmi)
 |  |  | 'HIDE' |  hide all module content, if display is on EnergyStar device that shows ugly screen no signal screen for the other two choices
