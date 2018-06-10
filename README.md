@@ -36,6 +36,8 @@ you can use the github motion project to provide motion detection events, this m
 
 ## Config Options
 
+all options are case insensitive, (all lower, mixed or all uppercase supported)
+
 | **Option** | **Default** | **Description** | **Info** 
 | --- | --- | --- | --- |
 | `source` | REQUIRED | 'external' | |
