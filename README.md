@@ -57,7 +57,7 @@ like this (motion.conf lines)
 
 *# Command to be executed when an event starts. (default: none)
 *# An event starts at first motion detected after a period of no motion defined by event_gap
-8 on_event_start /home/{userid}/MagicMirror/modules/MMM-SleepWake/external_motion started
+* on_event_start /home/{userid}/MagicMirror/modules/MMM-SleepWake/external_motion started
 
 *# Command to be executed when an event ends after a period of no motion
 *# (default: none). The period of no motion is defined by option event_gap.
