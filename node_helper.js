@@ -32,12 +32,12 @@ module.exports = NodeHelper.create({
 							socketNotificationReceived: function(notification, payload)
 							{
 								console.log("sleep-wake helper in socket notification="+notification);
-								switch(notification.toLowerCase())
+								switch(notification.toUpperCase())
 								{
-									case 'config':
+									case 'CONFIG':
 										vself.config=payload;
 										vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
-										if(vself.config.source.toLowerCase() === 'external'){
+										if(vself.config.source.toUpperCase() === 'EXTERNAL'){
 											// check to see if the external motion event folder exists
 											fs.access(vself.config.detectionDir, function(err) {
 												// if not
@@ -84,54 +84,54 @@ module.exports = NodeHelper.create({
 											});
 										}
 										break;
-									case  'user_presence':
+									case  'USER_PRESENCE':
 										if(payload==true)
 											vself.sleeping==false;
 										break;
-									case 'start_sleep':
+									case 'START_SLEEP':
 										vself.sleeping=true;
-										switch(vself.config.mode.toLowerCase()){
-											case 'pi':
+										switch(vself.config.mode.toUpperCase()){
+											case 'PI':
 												exec('/opt/vc/bin/tvservice -o', null);
 												vself.hdmi = false;
 												break;
-											case 'hide':
+											case 'HIDE':
 												// tell the module so it can hide the others
 												vself.sendSocketNotification('SLEEP_HIDE');
 												break;
-											case 'dpms':
+											case 'DPMS':
 												/////////// Turns off laptop display and desktop PC with DVI  @ Mykle ///////////////
 												exec('xset dpms force off', null);
 												break;
 										}
-										if(vself.config.mode.toLowerCase()!=='hide')
+										if(vself.config.mode.toUpperCase()!=='HIDE')
 											vself.sendSocketNotification('HW_ASLEEP')
 										break;
-									case 'end_sleep':
+									case 'END_SLEEP':
 										vself.sleeping=false;
-										switch(vself.config.mode.toLowerCase())
+										switch(vself.config.mode.toUpperCase())
 										{
-											case 'pi':
+											case 'PI':
 												exec('/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7', null);
 												vself.hdmi = true;
 												break;
-											case 'hide':
+											case 'HIDE':
 												// tell the module so it can unhide the others
 												vself.sendSocketNotification('SLEEP_WAKE');
 												break;
-											case 'dpms':
+											case 'DPMS':
 												/////////// Turns on laptop display and desktop PC with DVI @ Mykle ///////////////
 												exec('xset dpms force on', null);
 												break;
 										}
-										if(vself.config.mode.toLowerCase()!=='hide')
+										if(vself.config.mode.toUpperCase()!=='HIDE')
 											vself.sendSocketNotification('HW_AWAKE')
 										break;
-									case 'now_awake':
+									case 'NOW_AWAKE':
 										vself.sleeping=false;
 										vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
 									break;
-									case 'now_asleep':
+									case 'NOW_ASLEEP':
 										vself.sleeping=true;
 										if(vself.timeractive)
 											clearTimeout(vself.timeractive)
