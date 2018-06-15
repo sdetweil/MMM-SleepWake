@@ -71,14 +71,15 @@ Module.register("MMM-SleepWake",{
 											Log.log("received notification about sleep from "+ sender.name)
 											if(sender.name=='MMM-voice' || sender.name=='MMM-PIR-Sensor')
 												v_self1.sendSocketNotification(notification,payload);
-											if(v_self1.config.mode.toUpperCase=='HIDE' && notification =='NOW_ASLEEP'){
+                      Log.log("config="+v_self1.config.mode.toUpperCase())
+											if(v_self1.config.mode.toUpperCase()==='HIDE' && notification ==='NOW_ASLEEP'){
 												Log.log("previously hidden modules names="+payload);
 												// get the list of hidden module names
 												let namelist=JSON.parse(payload);
 												// loop thru the modules
 												MM.getModules().enumerate((module) => {
 													// if this module should be in the previously hidden list
-													if(namelist.indexOf(module.name) == -1)
+													if(namelist.indexOf(module.name) !== -1)
 													{														
 														// save it
 														v_self1.previously_hidden.push(module)
