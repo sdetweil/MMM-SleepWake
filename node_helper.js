@@ -127,14 +127,15 @@ module.exports = NodeHelper.create({
 										if(vself.config.mode.toUpperCase()!=='HIDE')
 											vself.sendSocketNotification('HW_AWAKE')
 										break;
-									case 'NOW_AWAKE':
-										vself.sleeping=false;
-										vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
-									break;
-									case 'NOW_ASLEEP':
-										vself.sleeping=true;
-										if(vself.timeractive)
-											clearTimeout(vself.timeractive)
+									case 'STAND_BY':
+										if(payload.status === false) {
+											vself.sleeping=false;
+											vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
+										} else if (payload.status === true) {
+											vself.sleeping=true;
+											if(vself.timeractive)
+												clearTimeout(vself.timeractive)
+										}
 									break;
 									default:
 										break;
