@@ -1,4 +1,4 @@
-# MMM-SleepWake  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/fewieden/MMM-voice/master/LICENSE) [![Build Status](https://travis-ci.org/fewieden/MMM-voice.svg?branch=master)](https://travis-ci.org/fewieden/MMM-voice) [![Code Climate](https://codeclimate.com/github/fewieden/MMM-voice/badges/gpa.svg?style=flat)](https://codeclimate.com/github/fewieden/MMM-voice) [![Known Vulnerabilities](https://snyk.io/test/github/fewieden/mmm-voice/badge.svg)](https://snyk.io/test/github/fewieden/mmm-voice) [![API Doc](https://doclets.io/fewieden/MMM-voice/master.svg)](https://doclets.io/fewieden/MMM-voice/master)
+# MMM-SleepWake
 
 Sleep/Wake module for MagicMirror<sup>2</sup>, using some external source for motion detection 
 
