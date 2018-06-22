@@ -20,7 +20,7 @@ Module.register("MMM-SleepWake",{
 												 // if the module is already hidden
 												 if(module.hidden==true)
 														// save it for wake up
-														v_self1.previously_hidden.push(module)
+														v_self1.previously_hidden.push(module.identifier)
 												 else
 														// hide this module
 														module.hide(1000);
@@ -30,7 +30,7 @@ Module.register("MMM-SleepWake",{
 											 MM.getModules().enumerate((module) => {
 													// if this module was NOT in the previously hidden list
 													//Log.log("looking for module ="+module.name+" in previous list");
-													if(v_self1.previously_hidden.indexOf(module)==-1)
+													if(v_self1.previously_hidden.indexOf(module.identifier)==-1)
 													{														
 														// show it
 															module.show(1000);
@@ -66,23 +66,20 @@ Module.register("MMM-SleepWake",{
 												else
 														Log.log("MMM-PIR-Sensor loaded, defering");
 										break;
-										case 'NOW_ASLEEP':
-										case 'NOW_AWAKE':
+										case 'STAND_BY':
 											Log.log("received notification about sleep from "+ sender.name)
 											if(sender.name=='MMM-voice' || sender.name=='MMM-PIR-Sensor')
 												v_self1.sendSocketNotification(notification,payload);
                       Log.log("config="+v_self1.config.mode.toUpperCase())
-											if(v_self1.config.mode.toUpperCase()==='HIDE' && notification ==='NOW_ASLEEP'){
-												Log.log("previously hidden modules names="+payload);
-												// get the list of hidden module names
-												let namelist=JSON.parse(payload);
+											if(v_self1.config.mode.toUpperCase()==='HIDE' && payload.status === true){
+												Log.log("previously hidden module identifiers="+payload.modules);
 												// loop thru the modules
 												MM.getModules().enumerate((module) => {
 													// if this module should be in the previously hidden list
-													if(namelist.indexOf(module.name) !== -1)
+													if(payload.modules.indexOf(module.identifier) !== -1)
 													{														
 														// save it
-														v_self1.previously_hidden.push(module)
+														v_self1.previously_hidden.push(module.identifier)
 													}
 											 });
 											}
