@@ -43,9 +43,9 @@ all options are case insensitive, (all lower, mixed or all uppercase supported)
 | `source` | REQUIRED | 'external' | |
 | `delay` | OPTIONAL | `15` | amount of time with no motion before sleeping|
 | `mode` | OPTIONAL | |
-|        |          |'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source
+|        |          |'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source 
 |  |  | 'DPMS' |  use the exec DMPS command to turn off the monitor source (not on pi, or not hdmi)
-|  |  | 'HIDE' |  hide all module content, if display is on EnergyStar device that shows ugly 'no signal' screen for the other two choices
+|  |  | 'HIDE' |  hide all module content, if display is on EnergyStar device that shows ugly 'no signal' screen for the other two choices (default)
 | `detectionDir` | OPTIONAL | '/home/{userid}/MagicMirror/modules/MMM-SleepWake/motion'  |  the path to the folde that will received the motion notification files from the external_motion script
 | `detectionFile` | OPTIONAL|  filename generated for motion start. default = 'detected' | the name of the file in the detectionDir folder that indicates motion started
 

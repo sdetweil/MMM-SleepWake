@@ -4,7 +4,7 @@
 						delay: 2, // minutes , default = 15 minutes
 						"source": 
 								"External",
-								// choices are PIR  -- uses the Raspberry pi hardware dection pins and PIR sensor
+								// choices are PIR  -- uses the Raspberry pi hardware detection pins and PIR sensor
 								//						 	or 
 								//						 External  -- uses some external source for motion detection, like a video camera
 								//											 -- see the github motion project 

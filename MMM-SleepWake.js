@@ -2,10 +2,10 @@ var v_self1;
 Module.register("MMM-SleepWake",{
 							previously_hidden: [],
 							defaults: {
-												delay: 5,
-												source: 'PIR',
-												mode:  'PI',
-												detectionDir: '/home/pi/smart-mirror/motion',
+												delay: 15,
+												source: 'external',
+												mode:  'hide',
+												detectionDir: '/home/odroid/MagicMirror/MMM-SleepWake/motion',
 												detectionFile: 'detected',
 							},
 							socketNotificationReceived: function(notification, payload)
@@ -56,29 +56,30 @@ Module.register("MMM-SleepWake",{
 									Log.log("sleep-wake in notificationReceived");
 								  Log.log("notification='"+notification+"'");
 									Log.log("sender="+sender);
-									Log.log("payload="+JSON.stringify(payload));
+									//Log.log("payload="+JSON.stringify(payload));
 									switch(notification) 
 									{
 										case 'ALL_MODULES_STARTED':
 												v_self1=this;
-												if(v_self1.config.mode.toLowerCase()!=='PIR' || !this.PIR_Loaded())
+												if(v_self1.config.mode.toUpperCase()!=='PIR' || !this.PIR_Loaded())
 														v_self1.sendSocketNotification("config", v_self1.config);
 												else
 														Log.log("MMM-PIR-Sensor loaded, defering");
-										break;											
+										break;
 										case 'NOW_ASLEEP':
 										case 'NOW_AWAKE':
 											Log.log("received notification about sleep from "+ sender.name)
 											if(sender.name=='MMM-voice' || sender.name=='MMM-PIR-Sensor')
 												v_self1.sendSocketNotification(notification,payload);
-											if(v_self1.config.mode=='HIDE' && notification =='NOW_ASLEEP'){
+                      Log.log("config="+v_self1.config.mode.toUpperCase())
+											if(v_self1.config.mode.toUpperCase()==='HIDE' && notification ==='NOW_ASLEEP'){
 												Log.log("previously hidden modules names="+payload);
 												// get the list of hidden module names
 												let namelist=JSON.parse(payload);
 												// loop thru the modules
 												MM.getModules().enumerate((module) => {
-													// if this module should be in the previously hidden list													
-													if(namelist.indexOf(module.name)==-1)
+													// if this module should be in the previously hidden list
+													if(namelist.indexOf(module.name) !== -1)
 													{														
 														// save it
 														v_self1.previously_hidden.push(module)
