@@ -24,13 +24,14 @@ you can use the github motion project to provide motion detection events, this m
     ```
     {
         module: 'MMM-SleepWake',
-        delay:  15,               // default
-        source: 'external',
-        mode:  see below,
-         // detectionDir: folder containing externally generated file when motion starts
-         //               will be created if needed
-         // detectionFile:  filename generated for motion start. default = 'detected'
-
+        config {
+            delay:  15,               // default
+            source: 'external',
+            mode:  see below,
+              // detectionDir: folder containing externally generated file when motion starts
+              //               will be created if needed
+              // detectionFile:  filename generated for motion start. default = 'detected'
+        }
     }
     ```
 
