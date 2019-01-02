@@ -53,6 +53,7 @@ all options are case insensitive, (all lower, mixed or all uppercase supported)
 ## Usage
 
 configure the github motion project (or whatever method you want to detect motion) to write a file for motion start or end. 
+motion config file is /etc/motion/motion.conf
 
 like this (motion.conf lines)
 
