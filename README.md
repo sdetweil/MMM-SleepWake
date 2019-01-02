@@ -24,7 +24,7 @@ you can use the github motion project to provide motion detection events, this m
     ```
     {
         module: 'MMM-SleepWake',
-        config {
+        config: {
             delay:  15,               // default
             source: 'external',
             mode:  see below,
