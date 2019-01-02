@@ -13,13 +13,19 @@ you can use the github motion project to provide motion detection events, this m
 * An installation of [MagicMirror<sup>2</sup>](https://github.com/MichMich/MagicMirror)
 * Packages: no additional packages, uses file based events
 * A camera of some sort, supported by the Motion project (https://motion-project.github.io/)
+* nstall the Motion project code and configure (see below)
 
 
 ## Installation
 
 1. Clone this repo into `~/MagicMirror/modules` directory.
 
-1. Configure your `~/MagicMirror/config/config.js`:
+2.  the execute bit is not set on the motion detection script… 
+
+    cd modules/MMM-SleepWake
+    chmod +x external_motion
+
+3. Configure your `~/MagicMirror/config/config.js`:
 
     ```
     {
