@@ -13,31 +13,24 @@ you can use the github motion project to provide motion detection events, this m
 * An installation of [MagicMirror<sup>2</sup>](https://github.com/MichMich/MagicMirror)
 * Packages: no additional packages, uses file based events
 * A camera of some sort, supported by the Motion project (https://motion-project.github.io/)
-* nstall the Motion project code and configure (see below)
 
 
 ## Installation
 
 1. Clone this repo into `~/MagicMirror/modules` directory.
 
-2.  the execute bit is not set on the motion detection script… 
-
-    cd modules/MMM-SleepWake
-    chmod +x external_motion
-
-3. Configure your `~/MagicMirror/config/config.js`:
+1. Configure your `~/MagicMirror/config/config.js`:
 
     ```
     {
         module: 'MMM-SleepWake',
-        config: {
-            delay:  15,               // default
-            source: 'external',
-            mode:  see below,
-              // detectionDir: folder containing externally generated file when motion starts
-              //               will be created if needed
-              // detectionFile:  filename generated for motion start. default = 'detected'
-        }
+        delay:  15,               // default
+        source: 'external',
+        mode:  see below,
+         // detectionDir: folder containing externally generated file when motion starts
+         //               will be created if needed
+         // detectionFile:  filename generated for motion start. default = 'detected'
+
     }
     ```
 
@@ -53,13 +46,12 @@ all options are case insensitive, (all lower, mixed or all uppercase supported)
 |        |          |'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source 
 |  |  | 'DPMS' |  use the exec DMPS command to turn off the monitor source (not on pi, or not hdmi)
 |  |  | 'HIDE' |  hide all module content, if display is on EnergyStar device that shows ugly 'no signal' screen for the other two choices (default)
-| `detectionDir` | OPTIONAL | '/home/{userid}/MagicMirror/modules/MMM-SleepWake/motion'  |  the path to the folder that will received the motion notification files from the external_motion script
+| `detectionDir` | OPTIONAL | '/home/{userid}/MagicMirror/modules/MMM-SleepWake/motion'  |  the path to the folde that will received the motion notification files from the external_motion script
 | `detectionFile` | OPTIONAL|  filename generated for motion start. default = 'detected' | the name of the file in the detectionDir folder that indicates motion started
 
 ## Usage
 
 configure the github motion project (or whatever method you want to detect motion) to write a file for motion start or end. 
-motion config file is /etc/motion/motion.conf
 
 like this (motion.conf lines)
 

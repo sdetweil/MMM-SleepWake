@@ -37,7 +37,15 @@ module.exports = NodeHelper.create({
 									case 'CONFIG':
 										vself.config=payload;
 										vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
-										if(vself.config.source.toUpperCase() === 'EXTERNAL'){
+											if(vself.config.source.toUpperCase() === 'EXTERNAL'){
+											if(vself.config.detectionDir=='/motion')
+										  {
+												  // its the default folder
+													//console.log("full path="+path.join(__dirname,vself.config.detectionDir))
+													vself.config.detectionDir= path.join(__dirname,vself.config.detectionDir)
+													//console.log("setting detectionDir path from local folder ="+vself.config.detectionDir);
+											}
+										  console.log(" external source defined");
 											// check to see if the external motion event folder exists
 											fs.access(vself.config.detectionDir, function(err) {
 												// if not

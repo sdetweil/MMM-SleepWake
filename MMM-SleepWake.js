@@ -1,13 +1,15 @@
 var v_self1;
+
 Module.register("MMM-SleepWake",{
 							previously_hidden: [],
 							defaults: {
 												delay: 15,
 												source: 'external',
 												mode:  'hide',
-												detectionDir: '/home/odroid/MagicMirror/MMM-SleepWake/motion',
+												detectionDir: "/motion",
 												detectionFile: 'detected',
 							},
+
 							socketNotificationReceived: function(notification, payload)
 							{
 									Log.log("sleep/wake in notificationReceived");
@@ -62,7 +64,10 @@ Module.register("MMM-SleepWake",{
 										case 'ALL_MODULES_STARTED':
 												v_self1=this;
 												if(v_self1.config.mode.toUpperCase()!=='PIR' || !this.PIR_Loaded())
+												{
+														//Log.log("SleepWake config="+JSON.stringify(v_self1.config));
 														v_self1.sendSocketNotification("config", v_self1.config);
+												}
 												else
 														Log.log("MMM-PIR-Sensor loaded, defering");
 										break;

@@ -23,9 +23,10 @@
 								//				hides all modules. modules hidden when the sleep is issued will be hidden on wakeup
 								//				for energyStar monitors and TVs, this allows the screen to remain powered on so it will come alive on movement
 								//
-						detectionDir: '/home/odroid/smart-mirror/motion',
+						detectionDir: '/home/{user}/MagicMirror/modules/MMM-SleepWake/motion',
   							// detectionDir: folder containing externally generated file when motion starts
 	  						//								will be created if needed
+								// where {user}   is the userid the Magic Mirror code is installed under
 		  					// detectionFile:  filename generated for motion start. defalt = 'detected'
 				}
 		},
