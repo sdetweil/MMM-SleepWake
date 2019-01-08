@@ -1,5 +1,6 @@
 var NodeHelper = require("node_helper");
 var fs = require('fs');
+var exec = require('child_process').exec;
 const path = require('path');
 var vself=null;
 module.exports = NodeHelper.create({
@@ -37,7 +38,14 @@ module.exports = NodeHelper.create({
 									case 'CONFIG':
 										vself.config=payload;
 										vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
-											if(vself.config.source.toUpperCase() === 'EXTERNAL'){
+										if(vself.config.source.toUpperCase() === 'EXTERNAL'){
+											exec('/bin/chmod +x '+path.join(__dirname,"external_motion"), function (error, stdout, stderr) {
+													if(error!=null)
+													{
+															console.log("change permissions failed "+JSON.stringify(error));
+													}
+											}); 
+
 											if(vself.config.detectionDir=='/motion')
 										  {
 												  // its the default folder
