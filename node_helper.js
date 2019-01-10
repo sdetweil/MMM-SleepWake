@@ -108,7 +108,12 @@ module.exports = NodeHelper.create({
 										vself.sleeping=true;
 										switch(vself.config.mode.toUpperCase()){
 											case 'PI':
-												exec('/opt/vc/bin/tvservice -o', null);
+												exec('/opt/vc/bin/tvservice -o',  function (error, stdout, stderr) {
+													if(error!=null)
+													{
+															console.log("/opt/vc/bin/tvservice -o failed "+JSON.stringify(error));
+													}
+											});
 												vself.hdmi = false;
 												break;
 											case 'HIDE':
@@ -117,7 +122,12 @@ module.exports = NodeHelper.create({
 												break;
 											case 'DPMS':
 												/////////// Turns off laptop display and desktop PC with DVI  @ Mykle ///////////////
-												exec('xset dpms force off', null);
+												exec('xset dpms force off',  function (error, stdout, stderr) {
+													if(error!=null)
+													{
+															console.log("xset dpms force off failed "+JSON.stringify(error));
+													}
+											});
 												break;
 										}
 										if(vself.config.mode.toUpperCase()!=='HIDE')
@@ -128,7 +138,12 @@ module.exports = NodeHelper.create({
 										switch(vself.config.mode.toUpperCase())
 										{
 											case 'PI':
-												exec('/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7', null);
+												exec('/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7',  function (error, stdout, stderr) {
+													if(error!=null)
+													{
+															console.log("/opt/vc/bin/tvservice -p failed "+JSON.stringify(error));
+													}
+											});
 												vself.hdmi = true;
 												break;
 											case 'HIDE':
@@ -137,7 +152,12 @@ module.exports = NodeHelper.create({
 												break;
 											case 'DPMS':
 												/////////// Turns on laptop display and desktop PC with DVI @ Mykle ///////////////
-												exec('xset dpms force on', null);
+												exec('xset dpms force on', function (error, stdout, stderr) {
+													if(error!=null)
+													{
+															console.log("xset dpms force on failed "+JSON.stringify(error));
+													}
+											});
 												break;
 										}
 										if(vself.config.mode.toUpperCase()!=='HIDE')
