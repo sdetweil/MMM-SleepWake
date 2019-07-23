@@ -1,3 +1,4 @@
+
 var v_self1;
 
 Module.register("MMM-SleepWake",{
@@ -77,16 +78,23 @@ Module.register("MMM-SleepWake",{
 												v_self1.sendSocketNotification(notification,payload);
                       Log.log("config="+v_self1.config.mode.toUpperCase())
 											if(v_self1.config.mode.toUpperCase()==='HIDE' && payload.status === true){
-												Log.log("previously hidden module identifiers="+payload.modules);
-												// loop thru the modules
-												MM.getModules().enumerate((module) => {
-													// if this module should be in the previously hidden list
-													if(payload.modules.indexOf(module.identifier) !== -1)
-													{														
-														// save it
-														v_self1.previously_hidden.push(module.identifier)
-													}
-											 });
+                        if( sender.name == 'MMM-AssistantMk2' && payload.triggerHide === true){
+                          //
+                          Log.log("MMM-AssistantMk2 says go to sleep");
+                          this.sendSocketNotification('START_SLEEP', null)
+                        }
+                        else {
+                          Log.log("previously hidden module identifiers="+payload.modules);
+                          // loop thru the modules
+                          MM.getModules().enumerate((module) => {
+                            // if this module should be in the previously hidden list
+                            if(payload.modules.indexOf(module.identifier) !== -1)
+                            {														
+                              // save it
+                              v_self1.previously_hidden.push(module.identifier)
+                            }
+                          })
+                        }
 											}
 										break;
 									}

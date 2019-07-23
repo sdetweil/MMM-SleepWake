@@ -28,8 +28,7 @@ module.exports = NodeHelper.create({
 							{	
 								if(vself.sleeping==false)
 									vself.socketNotificationReceived('start_sleep');									
-							},
-							
+							}		,
 							socketNotificationReceived: function(notification, payload)
 							{
 								console.log("sleep-wake helper in socket notification="+notification);
@@ -53,7 +52,11 @@ module.exports = NodeHelper.create({
 													vself.config.detectionDir= path.join(__dirname,vself.config.detectionDir)
 													//console.log("setting detectionDir path from local folder ="+vself.config.detectionDir);
 											}
-										  console.log(" external source defined");
+
+//										  console.log(" external source defined");
+
+										  console.log(" external source defined dir="+vself.config.detectionDir);
+
 											// check to see if the external motion event folder exists
 											fs.access(vself.config.detectionDir, function(err) {
 												// if not
@@ -61,6 +64,12 @@ module.exports = NodeHelper.create({
 													// create it
 													fs.mkdir(vself.config.detectionDir);
 													console.log('created motion directory', vself.config.detectionDir);
+													exec('/bin/chmod 666 '+vself.config.detectionDir, function (error, stdout, stderr) {
+													if(error!=null)
+													{
+															console.log("change permissions failed "+JSON.stringify(error));
+													}
+											});
 												}
 												else{
 													// make sure the directory is empty
