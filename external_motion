@@ -11,13 +11,19 @@
 #
 #
 # set the default parm, if nothing provided
+mac=$(uname -s)
+if [ $mac == 'Darwin' ]; then
+	cmd=greadlink
+else
+	cmd=readlink
+fi
 f=detected
 
 # if a parm specified
 if [ "$#" -ne 0 ]; then
 	# lowercase it
-	f=${1,,}
-	if [ "${f:0:5}" == "start" ]; then
+	f=$(echo $1  | cut -c 1-5 |  awk '{print tolower($0)}' )
+	if [ "$f" == "start" ]; then
 			f='detected'
 	else
 			f='ended'
@@ -25,10 +31,10 @@ if [ "$#" -ne 0 ]; then
 fi
 
 # user that started MagicMirror should have access permissions 
-user=`ps -ef | grep npm | grep -m 1 -v -- auto | awk '{ print $1}'`
+user=`ps aux | grep npm | grep -m 1 -v -- auto | awk '{ print $1}'`
 
 # where is this script located?
-SCRIPT="$(readlink --canonicalize-existing "$0")"
+SCRIPT="$($cmd -f "$0")"
 SCRIPTPATH="$(dirname "$SCRIPT")"
 
 # this script is in the scripts folder, the motion folder is back up the tree 1 level.
