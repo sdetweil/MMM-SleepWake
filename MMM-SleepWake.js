@@ -20,13 +20,13 @@ Module.register("MMM-SleepWake",{
 		{
 		case "SLEEP_HIDE":
 			MM.getModules().enumerate((module) => {
-						 // if the module is already hidden
-						 if(module.hidden==true)
-				// save it for wake up
-				{v_self1.previously_hidden.push(module.identifier);}
-						 else
-				// hide this module
-				{module.hide(1000);}
+				// if the module is already hidden
+				if(module.hidden==true)
+					// save it for wake up
+					{v_self1.previously_hidden.push(module.identifier);}
+				else
+					// hide this module
+					{module.hide(1000);}
 			});
 			break;
 		case "SLEEP_WAKE":
@@ -74,7 +74,7 @@ Module.register("MMM-SleepWake",{
 		case "STAND_BY":
 			Log.log("received notification about sleep from "+ sender.name);
 			if(sender.name=="MMM-voice" || sender.name=="MMM-PIR-Sensor")
-			{v_self1.sendSocketNotification(notification,payload);}
+				{v_self1.sendSocketNotification(notification,payload);}
 			Log.log("config="+v_self1.config.mode.toUpperCase());
 			if(v_self1.config.mode.toUpperCase()==="HIDE" && payload.status === true){
 				if( sender.name == "MMM-AssistantMk2" && payload.triggerHide === true){
@@ -96,6 +96,17 @@ Module.register("MMM-SleepWake",{
 				}
 			}
 			break;
+		case 'USER_PRESENCE':	
+		  if(sender.name == 'MMM-PIR-Sensor'){
+				if(payload == true){
+					Log.log("received notice user around"
+					v_self1.sendSocketNotification("END_SLEEP");
+				}
+				else{
+					Log.log("received notice user no longer around"
+				  v_self1.sendSocketNotification("START_SLEEP");
+				}
+			}
 		}
 	},
 });
