@@ -41,7 +41,7 @@ all options are case insensitive, (all lower, mixed or all uppercase supported)
 | **Option** | **Default** | **Description** | **Info** 
 | --- | --- | --- | --- |
 | `source` | REQUIRED | 'external' | |
-| `delay` | OPTIONAL | `15` | amount of time with no motion before sleeping|
+| `delay` | OPTIONAL | `15` | amount of time with no motion before sleeping, in minutes|
 | `mode` | OPTIONAL | |
 |        |          |'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source 
 |  |  | 'DPMS' |  use the exec DMPS command to turn off the monitor source (not on pi, or not hdmi)
