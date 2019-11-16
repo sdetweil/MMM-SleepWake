@@ -99,11 +99,11 @@ Module.register("MMM-SleepWake",{
 		case 'USER_PRESENCE':	
 		  if(sender.name == 'MMM-PIR-Sensor'){
 				if(payload == true){
-					Log.log("received notice user around"
+					Log.log("received notice user around")
 					v_self1.sendSocketNotification("END_SLEEP");
 				}
 				else{
-					Log.log("received notice user no longer around"
+					Log.log("received notice user no longer around")
 				  v_self1.sendSocketNotification("START_SLEEP");
 				}
 			}
