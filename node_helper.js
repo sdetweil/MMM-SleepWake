@@ -62,14 +62,15 @@ module.exports = NodeHelper.create({
 					// if not
 					if (err && err.code === "ENOENT") {
 						// create it
-						fs.mkdir(vself.config.detectionDir);
-						console.log("created motion directory", vself.config.detectionDir);
-						exec("/bin/chmod 666 "+vself.config.detectionDir, function (error, stdout, stderr) {
-							if(error!=null)
-							{
-								console.log("change permissions failed "+JSON.stringify(error));
-							}
-						});
+						fs.mkdir(vself.config.detectionDir, (err)=> {
+							console.log("created motion directory", vself.config.detectionDir);
+							exec("/bin/chmod 666 "+vself.config.detectionDir, function (error, stdout, stderr) {
+								if(error!=null)
+								{
+									console.log("change permissions failed "+JSON.stringify(error));
+								}
+							});
+						})
 					}
 					else{
 						// make sure the directory is empty
