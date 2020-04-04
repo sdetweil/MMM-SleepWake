@@ -53,14 +53,12 @@ Module.register("MMM-SleepWake",{
 		});
 		return rc;
 	},
-	notificationReceived: function(notification, payload, sender)
-	{
+	notificationReceived: function(notification, payload, sender){
 		Log.log("sleep-wake in notificationReceived");
 		Log.log("notification='"+notification+"'");
 		Log.log("sender="+sender);
 		//Log.log("payload="+JSON.stringify(payload));
-		switch(notification)
-		{
+		switch(notification){
 		case "ALL_MODULES_STARTED":
 			v_self1=this;
 			if(v_self1.config.mode.toUpperCase()!=="PIR" || !this.PIR_Loaded())
@@ -107,6 +105,17 @@ Module.register("MMM-SleepWake",{
 				  v_self1.sendSocketNotification("START_SLEEP");
 				}
 			}
+			break;
+		case 'MONITOR_ACTION':
+			if(sender.name =='MMM-AlexaControl'){
+				if(payload == 'SLEEP_WAKE'){
+					v_self1.sendSocketNotification("END_SLEEP");
+				}
+				else{
+					v_self1.sendSocketNotification("START_SLEEP");
+				}
+			}
+		    break;			
 		}
 	},
 });
