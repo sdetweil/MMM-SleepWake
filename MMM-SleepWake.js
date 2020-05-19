@@ -54,9 +54,9 @@ Module.register("MMM-SleepWake",{
 		return rc;
 	},
 	notificationReceived: function(notification, payload, sender){
-		Log.log("sleep-wake in notificationReceived");
-		Log.log("notification='"+notification+"'");
-		Log.log("sender="+sender);
+		//Log.log("sleep-wake in notificationReceived");
+		//Log.log("notification='"+notification+"'");
+		//Log.log("sender="+sender);
 		//Log.log("payload="+JSON.stringify(payload));
 		switch(notification){
 		case "ALL_MODULES_STARTED":

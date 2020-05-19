@@ -93,8 +93,9 @@ module.exports = NodeHelper.create({
 										console.log("!s:","motionstart");
 										clearTimeout(vself.timeractive);
 										vself.timeractive=null;
-										if(vself.sleeping)
-										{vself.socketNotificationReceived("end_sleep");}
+										if(vself.sleeping){
+											vself.socketNotificationReceived("end_sleep");
+										}
 									}
 									else {
 										// signal motion ended
