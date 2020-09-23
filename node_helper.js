@@ -99,7 +99,7 @@ module.exports = NodeHelper.create({
 									}
 									else {
 										// signal motion ended
-										//console.log("!e:","motionend");
+										console.log("!e:","motionend");
 										vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
 									}
 								}
