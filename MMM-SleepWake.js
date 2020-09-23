@@ -9,6 +9,10 @@ Module.register("MMM-SleepWake",{
 		mode:  "hide",
 		detectionDir: "/motion",
 		detectionFile: "detected",
+		pi_off: "/opt/vc/bin/tvservice -o",
+		pi_on: "/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7",
+		dpms_off: "xset dpms force off",
+		dpms_on: "xset dpms force on"
 	},
 
 	socketNotificationReceived: function(notification, payload)
@@ -94,7 +98,7 @@ Module.register("MMM-SleepWake",{
 				}
 			}
 			break;
-		case 'USER_PRESENCE':	
+		case 'USER_PRESENCE':
 		  if(sender.name == 'MMM-PIR-Sensor'){
 				if(payload == true){
 					Log.log("received notice user around")
@@ -115,7 +119,7 @@ Module.register("MMM-SleepWake",{
 					v_self1.sendSocketNotification("START_SLEEP");
 				}
 			}
-		    break;			
+		    break;
 		}
 	},
 });

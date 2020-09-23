@@ -121,10 +121,10 @@ module.exports = NodeHelper.create({
 			switch(vself.config.mode.toUpperCase()){
 			case "PI":
 			  console.log("using PI approach (tvservice)")
-				exec("/opt/vc/bin/tvservice -o",  function (error, stdout, stderr) {
+				exec(vself.config.pi_off,  function (error, stdout, stderr) {
 					if(error!=null)
 					{
-						console.log("/opt/vc/bin/tvservice -o failed "+JSON.stringify(error));
+						console.log(vself.config.pi_off +" failed "+JSON.stringify(error));
 					}
 				});
 				vself.hdmi = false;
@@ -135,10 +135,10 @@ module.exports = NodeHelper.create({
 				break;
 			case "DPMS":
 				/////////// Turns off laptop display and desktop PC with DVI  @ Mykle ///////////////
-				exec("xset dpms force off",  function (error, stdout, stderr) {
+				exec(vself.config.dpms_off,  function (error, stdout, stderr) {
 					if(error!=null)
 					{
-						console.log("xset dpms force off failed "+JSON.stringify(error));
+						console.log(vself.config.dpms_off+" failed "+JSON.stringify(error));
 					}
 				});
 				break;
@@ -153,10 +153,10 @@ module.exports = NodeHelper.create({
 			{
 			case "PI":
 			  console.log("waking up using pi approach")
-				exec("/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7",  function (error, stdout, stderr) {
+				exec(vself.config.pi_on,  function (error, stdout, stderr) {
 					if(error!=null)
 					{
-						console.log("/opt/vc/bin/tvservice -p failed "+JSON.stringify(error));
+						console.log(vself.config.pi_on+" failed "+JSON.stringify(error));
 					}
 				});
 				vself.hdmi = true;
@@ -167,10 +167,10 @@ module.exports = NodeHelper.create({
 				break;
 			case "DPMS":
 				/////////// Turns on laptop display and desktop PC with DVI @ Mykle ///////////////
-				exec("xset dpms force on", function (error, stdout, stderr) {
+				exec(vself.config.dpms_on, function (error, stdout, stderr) {
 					if(error!=null)
 					{
-						console.log("xset dpms force on failed "+JSON.stringify(error));
+						console.log(vself.config.dpms_on +" failed "+JSON.stringify(error));
 					}
 				});
 				break;
