@@ -99,7 +99,7 @@ module.exports = NodeHelper.create({
 									}
 									else {
 										// signal motion ended
-										console.log("!e:","motionend");
+										//console.log("!e:","motionend");
 										vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
 									}
 								}
@@ -116,9 +116,11 @@ module.exports = NodeHelper.create({
 			{vself.sleeping==false;}
 			break;
 		case "START_SLEEP":
+		  console.log("processing start sleep")
 			vself.sleeping=true;
 			switch(vself.config.mode.toUpperCase()){
 			case "PI":
+			  console.log("using PI approach (tvservice)")
 				exec("/opt/vc/bin/tvservice -o",  function (error, stdout, stderr) {
 					if(error!=null)
 					{
@@ -145,10 +147,12 @@ module.exports = NodeHelper.create({
 			{vself.sendSocketNotification("HW_ASLEEP");}
 			break;
 		case "END_SLEEP":
+		  console.log("waking up")
 			vself.sleeping=false;
 			switch(vself.config.mode.toUpperCase())
 			{
 			case "PI":
+			  console.log("waking up using pi approach")
 				exec("/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7",  function (error, stdout, stderr) {
 					if(error!=null)
 					{
