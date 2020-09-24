@@ -26,8 +26,10 @@ module.exports = NodeHelper.create({
 
 	noUser: function()
 	{
-		if(vself.sleeping==false)
-		{vself.socketNotificationReceived("start_sleep");}
+		//if(vself.sleeping==false)
+		//{
+			vself.socketNotificationReceived("start_sleep");
+			//}
 	}		,
 	socketNotificationReceived: function(notification, payload)
 	{
@@ -92,10 +94,11 @@ module.exports = NodeHelper.create({
 										// signal motion started
 										console.log("!s:","motionstart");
 										clearTimeout(vself.timeractive);
+										//vself.sleeping=false;
 										vself.timeractive=null;
-										if(vself.sleeping){
+										//if(vself.sleeping){
 											vself.socketNotificationReceived("end_sleep");
-										}
+										//}
 									}
 									else {
 										// signal motion ended
@@ -117,66 +120,74 @@ module.exports = NodeHelper.create({
 			break;
 		case "START_SLEEP":
 		  console.log("processing start sleep")
-			vself.sleeping=true;
-			switch(vself.config.mode.toUpperCase()){
-			case "PI":
-			  console.log("using PI approach (tvservice)")
-				exec(vself.config.pi_off,  function (error, stdout, stderr) {
-					if(error!=null)
-					{
-						console.log(vself.config.pi_off +" failed "+JSON.stringify(error));
-					}
-				});
-				vself.hdmi = false;
-				break;
-			case "HIDE":
-				// tell the module so it can hide the others
-				vself.sendSocketNotification("SLEEP_HIDE");
-				break;
-			case "DPMS":
-				/////////// Turns off laptop display and desktop PC with DVI  @ Mykle ///////////////
-				exec(vself.config.dpms_off,  function (error, stdout, stderr) {
-					if(error!=null)
-					{
-						console.log(vself.config.dpms_off+" failed "+JSON.stringify(error));
-					}
-				});
-				break;
+		  if(!vself.sleeping){
+				vself.sleeping=true;
+				switch(vself.config.mode.toUpperCase()){
+				case "PI":
+				  console.log("using PI approach (tvservice)")
+					exec(vself.config.pi_off,  function (error, stdout, stderr) {
+						if(error!=null)
+						{
+							console.log(vself.config.pi_off +" failed "+JSON.stringify(error));
+						}
+					});
+					vself.hdmi = false;
+					break;
+				case "HIDE":
+					// tell the module so it can hide the others
+					vself.sendSocketNotification("SLEEP_HIDE");
+					break;
+				case "DPMS":
+					/////////// Turns off laptop display and desktop PC with DVI  @ Mykle ///////////////
+					exec(vself.config.dpms_off,  function (error, stdout, stderr) {
+						if(error!=null)
+						{
+							console.log(vself.config.dpms_off+" failed "+JSON.stringify(error));
+						}
+					});
+					break;
+				}
 			}
-			if(vself.config.mode.toUpperCase()!=="HIDE")
-			{vself.sendSocketNotification("HW_ASLEEP");}
+			else
+				console.log("start sleep, already sleeping")
+			//if(vself.config.mode.toUpperCase()!=="HIDE")
+			//{vself.sendSocketNotification("HW_ASLEEP");}
 			break;
 		case "END_SLEEP":
 		  console.log("waking up")
-			vself.sleeping=false;
-			switch(vself.config.mode.toUpperCase())
-			{
-			case "PI":
-			  console.log("waking up using pi approach")
-				exec(vself.config.pi_on,  function (error, stdout, stderr) {
-					if(error!=null)
-					{
-						console.log(vself.config.pi_on+" failed "+JSON.stringify(error));
-					}
-				});
-				vself.hdmi = true;
-				break;
-			case "HIDE":
-				// tell the module so it can unhide the others
-				vself.sendSocketNotification("SLEEP_WAKE");
-				break;
-			case "DPMS":
-				/////////// Turns on laptop display and desktop PC with DVI @ Mykle ///////////////
-				exec(vself.config.dpms_on, function (error, stdout, stderr) {
-					if(error!=null)
-					{
-						console.log(vself.config.dpms_on +" failed "+JSON.stringify(error));
-					}
-				});
-				break;
+		  if(vself.sleeping){
+				vself.sleeping=false;
+				switch(vself.config.mode.toUpperCase())
+				{
+				case "PI":
+				  console.log("waking up using pi approach")
+					exec(vself.config.pi_on,  function (error, stdout, stderr) {
+						if(error!=null)
+						{
+							console.log(vself.config.pi_on+" failed "+JSON.stringify(error));
+						}
+					});
+					vself.hdmi = true;
+					break;
+				case "HIDE":
+					// tell the module so it can unhide the others
+					vself.sendSocketNotification("SLEEP_WAKE");
+					break;
+				case "DPMS":
+					/////////// Turns on laptop display and desktop PC with DVI @ Mykle ///////////////
+					exec(vself.config.dpms_on, function (error, stdout, stderr) {
+						if(error!=null)
+						{
+							console.log(vself.config.dpms_on +" failed "+JSON.stringify(error));
+						}
+					});
+					break;
+				}
 			}
-			if(vself.config.mode.toUpperCase()!=="HIDE")
-			{vself.sendSocketNotification("HW_AWAKE");}
+			else
+				console.log("waking up, already awake")
+			//if(vself.config.mode.toUpperCase()!=="HIDE")
+			//{vself.sendSocketNotification("HW_AWAKE");}
 			break;
 		case "STAND_BY":
 			if(payload.status === false) {
