@@ -23,9 +23,8 @@ module.exports = NodeHelper.create({
 		console.log("handler helper in stop");
 	},
 
-	noUser: function()
+	noUser: function(self)
 	{
-		let self = this;
 		//if(self.sleeping==false)
 		//{
 			self.socketNotificationReceived("start_sleep");
@@ -105,7 +104,7 @@ module.exports = NodeHelper.create({
 										// signal motion ended
 										if(self.config.debug)
 											console.log("!e:","motionend");
-										self.timeractive=setTimeout(()=>{self.noUser()},self.config.delay*(60*1000));
+										self.timeractive=setTimeout(()=>{self.noUser(self)},self.config.delay*(60*1000));
 										if(self.config.debug)
 											console.log("idle timer started for "+self.config.delay+" minutes")
 									}
