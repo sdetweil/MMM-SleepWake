@@ -38,7 +38,7 @@ module.exports = NodeHelper.create({
 		{
 		case "CONFIG":
 			self.config=payload;
-			self.timeractive=setTimeout(self.noUser,self.config.delay*(60*1000));
+			self.timeractive=setTimeout(()=>{self.noUser(self)},self.config.delay*(60*1000));
 			if(self.config.source.toUpperCase() === "EXTERNAL"){
 				exec("/bin/chmod +x "+path.join(__dirname,"external_motion"), function (error, stdout, stderr) {
 					if(error!=null)
@@ -190,7 +190,7 @@ module.exports = NodeHelper.create({
 					break;
 				case "HIDE":
 					if(self.config.debug)
-				  	console.log("waking up using hHIDE approach")
+				  	console.log("waking up using HIDE approach")
 					// tell the module so it can unhide the others
 					self.sendSocketNotification("SLEEP_WAKE");
 					break;
@@ -216,7 +216,7 @@ module.exports = NodeHelper.create({
 		case "STAND_BY":
 			if(payload.status === false) {
 				self.sleeping=false;
-				self.timeractive=setTimeout(self.noUser,self.config.delay*(60*1000));
+				self.timeractive=setTimeout(()=>{self.noUser(self)},self.config.delay*(60*1000));
 			} else if (payload.status === true) {
 				self.sleeping=true;
 				if(self.timeractive)
