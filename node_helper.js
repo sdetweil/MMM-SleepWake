@@ -47,25 +47,25 @@ module.exports = NodeHelper.create({
 					}
 				});
 
-				if(self.config.detectionDir=="/motion")
+				if(self.config.ndetectionDir=="/motion")
 				{
 				  // its the default folder
 					//console.log("full path="+path.join(__dirname,self.config.detectionDir))
-					self.config.detectionDir= path.join(__dirname,self.config.detectionDir);
+					self.config.ndetectionDir= path.join(__dirname,self.config.ndetectionDir);
 					//console.log("setting detectionDir path from local folder ="+self.config.detectionDir);
 				}
 				if(self.config.debug)
-				 console.log(" external source defined dir="+self.config.detectionDir);
+				 console.log(" external source defined dir="+self.config.ndetectionDir);
 
 				// check to see if the external motion event folder exists
-				fs.access(self.config.detectionDir, function(err) {
+				fs.access(self.config.ndetectionDir, function(err) {
 					// if not
 					if (err && err.code === "ENOENT") {
 						// create it
-						fs.mkdir(self.config.detectionDir, (err)=> {
+						fs.mkdir(self.config.ndetectionDir, (err)=> {
 							if(self.config.debug)
-								console.log("created motion directory", self.config.detectionDir);
-							exec("/bin/chmod 777 "+self.config.detectionDir, function (error, stdout, stderr) {
+								console.log("created motion directory", self.config.ndetectionDir);
+							exec("/bin/chmod 777 "+self.config.ndetectionDir, function (error, stdout, stderr) {
 								if(error!=null)
 								{
 									if(self.config.debug)
@@ -76,20 +76,20 @@ module.exports = NodeHelper.create({
 					}
 					else{
 						// make sure the directory is empty
-						self.rmDir(self.config.detectionDir,false);
+						self.rmDir(self.config.ndetectionDir,false);
 					}
 					// change detector function
 					// watch for a file to appear in the folder
-					fs.watch(self.config.detectionDir, (eventType, filename) => {
+					fs.watch(self.config.ndetectionDir, (eventType, filename) => {
 						if (filename) {
 							// remove the file
-							fs.unlink(path.join(self.config.detectionDir,filename), function(error) {
+							fs.unlink(path.join(self.config.ndetectionDir,filename), function(error) {
 								// consume the enonet error
 								if(error == null){
 									if(self.config.debug)
 										console.log("motion detected from external source");
 									// if the start motion file
-									if(filename === self.config.detectionFile) {
+									if(filename === self.config.ndetectionFile) {
 										// signal motion started
 										if(self.config.debug)
 											console.log("!s:","motionstart");

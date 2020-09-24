@@ -1,6 +1,6 @@
 # MMM-SleepWake
 
-Sleep/Wake module for MagicMirror<sup>2</sup>, using some external source for motion detection 
+Sleep/Wake module for MagicMirror<sup>2</sup>, using some external source for motion detection
 
 ## Information
 
@@ -25,12 +25,7 @@ you can use the github motion project to provide motion detection events, this m
     {
         module: 'MMM-SleepWake',
         delay:  15,               // default
-        source: 'external',
-        mode:  see below,
-         // detectionDir: folder containing externally generated file when motion starts
-         //               will be created if needed
-         // detectionFile:  filename generated for motion start. default = 'detected'
-
+        mode:  see below
     }
     ```
 
@@ -38,22 +33,24 @@ you can use the github motion project to provide motion detection events, this m
 
 all options are case insensitive, (all lower, mixed or all uppercase supported)
 
-| **Option** | **Default** | **Description** | **Info** 
+| **Option** | **Default** | **Description** | **Info**
 | --- | --- | --- | --- |
-| `source` | REQUIRED | 'external' | |
-| `delay` | OPTIONAL | `15` | amount of time with no motion before sleeping, in minutes|
-| `mode` | OPTIONAL | |
-|        |          |'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source 
+| `delay` | `OPTIONAL` | `15` | amount of time with no motion before sleeping, in minutes|
+| `mode` | `OPTIONAL` | |
+|        |          |'PI' |  use the tvservice command available on Raspberry pi to turn off the HDMI monitor source
 |  |  | 'DPMS' |  use the exec DMPS command to turn off the monitor source (not on pi, or not hdmi)
-|  |  | 'HIDE' |  hide all module content, if display is on EnergyStar device that shows ugly 'no signal' screen for the other two choices (default)
-| `detectionDir` | OPTIONAL | '/home/{userid}/MagicMirror/modules/MMM-SleepWake/motion'  |  the path to the folde that will received the motion notification files from the external_motion script
-| `detectionFile` | OPTIONAL|  filename generated for motion start. default = 'detected' | the name of the file in the detectionDir folder that indicates motion started
+|  |  | `'HIDE'` |  hide all module content, if display is on EnergyStar device that shows ugly 'no signal' screen for the other two choices (`default`)
+| `pi_on` | `OPTIONAL`|default: "/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7" | command string to execute when the pi should turn on the hdmi output|
+| `pi_off`| `OPTIONAL` |default: "/opt/vc/bin/tvservice -o"|command string to execute when the pi should turn on the hdmi output|
+|`dpms_on`|`OPTIONAL`| default: "xset dpms force on" |command string to execute when the pi should turn on the hdmi output using xset|
+|`dpms_off`|`OPTIONAL`| default: "xset dpms force off" |command string to execute when the pi should turn on the hdmi output using xset|
+| debug | `OPTIONAL`| false| enable logging of actions and events |
 
 ## Usage
 
-configure the github motion project (or whatever method you want to detect motion) to write a file for motion start or end. 
+configure the github motion project (or whatever method you want to detect motion) to write a file for motion start or end.
 
-like this (motion.conf lines)
+like this (motion.conf lines), below replace {userid} with the userid under which MagicMirror will be executing (typically 'pi' on Raspberry PI devices)
 
 *# Command to be executed when an event starts. (default: none)
 *# An event starts at first motion detected after a period of no motion defined by event_gap
@@ -65,4 +62,3 @@ like this (motion.conf lines)
 
 I have submitted changes to the MMM-voice and HelloLucy projects to help communicate between our modules,
 that way voice initiated sleep (go to sleep) and motion initiated wakeup will restore the mirror to the prior state (and vice versa)
-

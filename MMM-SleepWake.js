@@ -4,10 +4,9 @@ Module.register("MMM-SleepWake",{
 	previously_hidden: [],
 	defaults: {
 		delay: 15,
-		source: "external",
 		mode:  "hide",
-		detectionDir: "/motion",
-		detectionFile: "detected",
+		ndetectionDir: "/motion",
+		ndetectionFile: "detected",
 		pi_off: "/opt/vc/bin/tvservice -o",
 		pi_on: "/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7",
 		dpms_off: "xset dpms force off",
