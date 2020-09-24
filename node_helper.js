@@ -2,7 +2,6 @@ var NodeHelper = require("node_helper");
 var fs = require("fs");
 var exec = require("child_process").exec;
 const path = require("path");
-var vself=null;
 module.exports = NodeHelper.create({
 
 	config: null,
@@ -17,7 +16,7 @@ module.exports = NodeHelper.create({
 
 	start: function(){
 		console.log("handler helper in start");
-		vself=this;
+		//self=this;
 	},
 
 	stop: function(){
@@ -26,20 +25,22 @@ module.exports = NodeHelper.create({
 
 	noUser: function()
 	{
-		//if(vself.sleeping==false)
+		let self = this;
+		//if(self.sleeping==false)
 		//{
-			vself.socketNotificationReceived("start_sleep");
+			self.socketNotificationReceived("start_sleep");
 			//}
 	}		,
 	socketNotificationReceived: function(notification, payload)
 	{
+		let self = this;
 		console.log("sleep-wake helper in socket notification="+notification);
 		switch(notification.toUpperCase())
 		{
 		case "CONFIG":
-			vself.config=payload;
-			vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
-			if(vself.config.source.toUpperCase() === "EXTERNAL"){
+			self.config=payload;
+			self.timeractive=setTimeout(self.noUser,self.config.delay*(60*1000));
+			if(self.config.source.toUpperCase() === "EXTERNAL"){
 				exec("/bin/chmod +x "+path.join(__dirname,"external_motion"), function (error, stdout, stderr) {
 					if(error!=null)
 					{
@@ -47,165 +48,191 @@ module.exports = NodeHelper.create({
 					}
 				});
 
-				if(vself.config.detectionDir=="/motion")
+				if(self.config.detectionDir=="/motion")
 				{
 				  // its the default folder
-					//console.log("full path="+path.join(__dirname,vself.config.detectionDir))
-					vself.config.detectionDir= path.join(__dirname,vself.config.detectionDir);
-					//console.log("setting detectionDir path from local folder ="+vself.config.detectionDir);
+					//console.log("full path="+path.join(__dirname,self.config.detectionDir))
+					self.config.detectionDir= path.join(__dirname,self.config.detectionDir);
+					//console.log("setting detectionDir path from local folder ="+self.config.detectionDir);
 				}
-
-				//	console.log(" external source defined");
-
-				console.log(" external source defined dir="+vself.config.detectionDir);
+				if(self.config.debug)
+				 console.log(" external source defined dir="+self.config.detectionDir);
 
 				// check to see if the external motion event folder exists
-				fs.access(vself.config.detectionDir, function(err) {
+				fs.access(self.config.detectionDir, function(err) {
 					// if not
 					if (err && err.code === "ENOENT") {
 						// create it
-						fs.mkdir(vself.config.detectionDir, (err)=> {
-							console.log("created motion directory", vself.config.detectionDir);
-							exec("/bin/chmod 777 "+vself.config.detectionDir, function (error, stdout, stderr) {
+						fs.mkdir(self.config.detectionDir, (err)=> {
+							if(self.config.debug)
+								console.log("created motion directory", self.config.detectionDir);
+							exec("/bin/chmod 777 "+self.config.detectionDir, function (error, stdout, stderr) {
 								if(error!=null)
 								{
-									console.log("change permissions failed "+JSON.stringify(error));
+									if(self.config.debug)
+										console.log("change permissions failed "+JSON.stringify(error));
 								}
 							});
 						})
 					}
 					else{
 						// make sure the directory is empty
-						vself.rmDir(vself.config.detectionDir,false);
+						self.rmDir(self.config.detectionDir,false);
 					}
 					// change detector function
 					// watch for a file to appear in the folder
-					fs.watch(vself.config.detectionDir, (eventType, filename) => {
+					fs.watch(self.config.detectionDir, (eventType, filename) => {
 						if (filename) {
 							// remove the file
-							//console.log(" f="+vself.config.detectionFile+" file="+filename+"\n")
-							//console.log("config="+JSON.stringify(vself.config));
-							fs.unlink(path.join(vself.config.detectionDir,filename), function(error) {
+							fs.unlink(path.join(self.config.detectionDir,filename), function(error) {
 								// consume the enonet error
 								if(error == null){
-									console.log("motion detected from external source");
+									if(self.config.debug)
+										console.log("motion detected from external source");
 									// if the start motion file
-									if(filename === vself.config.detectionFile) {
+									if(filename === self.config.detectionFile) {
 										// signal motion started
-										console.log("!s:","motionstart");
-										clearTimeout(vself.timeractive);
-										//vself.sleeping=false;
-										vself.timeractive=null;
-										//if(vself.sleeping){
-											vself.socketNotificationReceived("end_sleep");
+										if(self.config.debug)
+											console.log("!s:","motionstart");
+										clearTimeout(self.timeractive);
+										//self.sleeping=false;
+										self.timeractive=null;
+										//if(self.sleeping){
+											self.socketNotificationReceived("end_sleep");
 										//}
 									}
 									else {
 										// signal motion ended
-										console.log("!e:","motionend");
-										vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
+										if(self.config.debug)
+											console.log("!e:","motionend");
+										self.timeractive=setTimeout(()=>{self.noUser()},self.config.delay*(60*1000));
+										if(self.config.debug)
+											console.log("idle timer started for "+self.config.delay+" minutes")
 									}
 								}
 							});
 						} else {
-							console.log("filename not provided");
+							if(self.config.debug)
+								console.log("filename not provided");
 						}
 					});
 				});
 			}
 			break;
+
 		case  "USER_PRESENCE":
 			if(payload==true)
-			{vself.sleeping==false;}
+			{self.sleeping==false;}
 			break;
+
 		case "START_SLEEP":
-		  console.log("processing start sleep")
-		  if(!vself.sleeping){
-				vself.sleeping=true;
-				switch(vself.config.mode.toUpperCase()){
+			if(self.config.debug)
+		  	console.log("processing start sleep")
+		  // if we are not already sleeping
+		  if(!self.sleeping){
+				self.sleeping=true;
+				switch(self.config.mode.toUpperCase())
+				{
 				case "PI":
-				  console.log("using PI approach (tvservice)")
-					exec(vself.config.pi_off,  function (error, stdout, stderr) {
+					if(self.config.debug)
+				  	console.log("using PI approach (tvservice)='"+self.config.pi_off+"'")
+					exec(self.config.pi_off,  function (error, stdout, stderr) {
 						if(error!=null)
 						{
-							console.log(vself.config.pi_off +" failed "+JSON.stringify(error));
+							console.log(self.config.pi_off +" failed "+JSON.stringify(error));
 						}
 					});
-					vself.hdmi = false;
+					self.hdmi = false;
 					break;
 				case "HIDE":
+					if(self.config.debug)
+				 		console.log("using HIDE approach")
 					// tell the module so it can hide the others
-					vself.sendSocketNotification("SLEEP_HIDE");
+					self.sendSocketNotification("SLEEP_HIDE");
 					break;
 				case "DPMS":
+					if(self.config.debug)
+				 		console.log("using DPMS approach (xset)='"+self.config.dmps_off+"'")
 					/////////// Turns off laptop display and desktop PC with DVI  @ Mykle ///////////////
-					exec(vself.config.dpms_off,  function (error, stdout, stderr) {
+					exec(self.config.dpms_off,  function (error, stdout, stderr) {
 						if(error!=null)
 						{
-							console.log(vself.config.dpms_off+" failed "+JSON.stringify(error));
+							console.log(self.config.dpms_off+" failed "+JSON.stringify(error));
 						}
 					});
 					break;
 				}
 			}
-			else
-				console.log("start sleep, already sleeping")
-			//if(vself.config.mode.toUpperCase()!=="HIDE")
-			//{vself.sendSocketNotification("HW_ASLEEP");}
+			else{
+				if(self.config.debug)
+					console.log("start sleep, already sleeping")
+			}
 			break;
+
 		case "END_SLEEP":
-		  console.log("waking up")
-		  if(vself.sleeping){
-				vself.sleeping=false;
-				switch(vself.config.mode.toUpperCase())
+			if(self.config.debug)
+		 		console.log("waking up")
+		  // if sleeping
+		  if(self.sleeping){
+		  	// wake up
+				self.sleeping=false;
+				switch(self.config.mode.toUpperCase())
 				{
 				case "PI":
-				  console.log("waking up using pi approach")
-					exec(vself.config.pi_on,  function (error, stdout, stderr) {
+					if(self.config.debug)
+				  	console.log("waking up using PI approach='"+self.config.pi_on+"'")
+					exec(self.config.pi_on,  function (error, stdout, stderr) {
 						if(error!=null)
 						{
-							console.log(vself.config.pi_on+" failed "+JSON.stringify(error));
+							console.log(self.config.pi_on+" failed "+JSON.stringify(error));
 						}
 					});
-					vself.hdmi = true;
+					self.hdmi = true;
 					break;
 				case "HIDE":
+					if(self.config.debug)
+				  	console.log("waking up using hHIDE approach")
 					// tell the module so it can unhide the others
-					vself.sendSocketNotification("SLEEP_WAKE");
+					self.sendSocketNotification("SLEEP_WAKE");
 					break;
 				case "DPMS":
 					/////////// Turns on laptop display and desktop PC with DVI @ Mykle ///////////////
-					exec(vself.config.dpms_on, function (error, stdout, stderr) {
+					if(self.config.debug)
+						console.log("waking up using DPMS approach='"+self.config.dpms_on+"'")
+					exec(self.config.dpms_on, function (error, stdout, stderr) {
 						if(error!=null)
 						{
-							console.log(vself.config.dpms_on +" failed "+JSON.stringify(error));
+							console.log(self.config.dpms_on +" failed "+JSON.stringify(error));
 						}
 					});
 					break;
 				}
 			}
-			else
-				console.log("waking up, already awake")
-			//if(vself.config.mode.toUpperCase()!=="HIDE")
-			//{vself.sendSocketNotification("HW_AWAKE");}
-			break;
-		case "STAND_BY":
-			if(payload.status === false) {
-				vself.sleeping=false;
-				vself.timeractive=setTimeout(vself.noUser,vself.config.delay*(60*1000));
-			} else if (payload.status === true) {
-				vself.sleeping=true;
-				if(vself.timeractive)
-				{clearTimeout(vself.timeractive);}
+			else	{
+				if(self.config.debug)
+					console.log("waking up, already awake")
 			}
 			break;
+
+		case "STAND_BY":
+			if(payload.status === false) {
+				self.sleeping=false;
+				self.timeractive=setTimeout(self.noUser,self.config.delay*(60*1000));
+			} else if (payload.status === true) {
+				self.sleeping=true;
+				if(self.timeractive)
+				{clearTimeout(self.timeractive);}
+			}
+			break;
+
 		default:
 			break;
 		}
 	},
-	rmDir : function(dirPath, removevself) {
-		if (removevself === undefined)
-		{removevself = true;}
+	// empty the specified folder. remove if requested
+	rmDir : function(dirPath, removeself) {
+		if (removeself === undefined)
+		{removeself = true;}
 		try { var files = fs.readdirSync(dirPath); }
 		catch(e) { return; }
 		if (files.length > 0)
@@ -216,9 +243,8 @@ module.exports = NodeHelper.create({
 			else
 			{rmDir(filePath);}
 		}}
-		if (removevself)
+		if (removeself)
 		{fs.rmdirSync(dirPath);}
 	},
-
 }
 );

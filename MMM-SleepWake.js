@@ -1,5 +1,4 @@
 
-var v_self1;
 
 Module.register("MMM-SleepWake",{
 	previously_hidden: [],
@@ -12,12 +11,14 @@ Module.register("MMM-SleepWake",{
 		pi_off: "/opt/vc/bin/tvservice -o",
 		pi_on: "/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7",
 		dpms_off: "xset dpms force off",
-		dpms_on: "xset dpms force on"
+		dpms_on: "xset dpms force on",
+		debug: true
 	},
 
 	socketNotificationReceived: function(notification, payload)
 	{
-		Log.log("sleep/wake in notificationReceived");
+		let self = this;
+		Log.log("sleep/wake in socketNotificationReceived");
 		Log.log("notification='"+notification+"'");
 
 		switch(notification)
@@ -27,7 +28,7 @@ Module.register("MMM-SleepWake",{
 				// if the module is already hidden
 				if(module.hidden==true)
 					// save it for wake up
-					{v_self1.previously_hidden.push(module.identifier);}
+					{self.previously_hidden.push(module.identifier);}
 				else
 					// hide this module
 					{module.hide(1000);}
@@ -37,14 +38,14 @@ Module.register("MMM-SleepWake",{
 					 MM.getModules().enumerate((module) => {
 				// if this module was NOT in the previously hidden list
 				//Log.log("looking for module ="+module.name+" in previous list");
-				if(v_self1.previously_hidden.indexOf(module.identifier)==-1)
+				if(self.previously_hidden.indexOf(module.identifier)==-1)
 				{
 					// show it
 					module.show(1000);
 				}
 					 });
 			// clear the list, if any
-			v_self1.previously_hidden = [];
+			self.previously_hidden = [];
 			break;
 		}
 	},
@@ -57,18 +58,20 @@ Module.register("MMM-SleepWake",{
 		});
 		return rc;
 	},
+
 	notificationReceived: function(notification, payload, sender){
+		let self = this;
 		//Log.log("sleep-wake in notificationReceived");
 		//Log.log("notification='"+notification+"'");
 		//Log.log("sender="+sender);
 		//Log.log("payload="+JSON.stringify(payload));
 		switch(notification){
 		case "ALL_MODULES_STARTED":
-			v_self1=this;
-			if(v_self1.config.mode.toUpperCase()!=="PIR" || !this.PIR_Loaded())
+			//self=this;
+			if(self.config.mode.toUpperCase()!=="PIR" || !this.PIR_Loaded())
 			{
-				//Log.log("SleepWake config="+JSON.stringify(v_self1.config));
-				v_self1.sendSocketNotification("config", v_self1.config);
+				//Log.log("SleepWake config="+JSON.stringify(self.config));
+				self.sendSocketNotification("config", self.config);
 			}
 			else
 			{Log.log("MMM-PIR-Sensor loaded, defering");}
@@ -76,9 +79,9 @@ Module.register("MMM-SleepWake",{
 		case "STAND_BY":
 			Log.log("received notification about sleep from "+ sender.name);
 			if(sender.name=="MMM-voice" || sender.name=="MMM-PIR-Sensor")
-				{v_self1.sendSocketNotification(notification,payload);}
-			Log.log("config="+v_self1.config.mode.toUpperCase());
-			if(v_self1.config.mode.toUpperCase()==="HIDE" && payload.status === true){
+				{self.sendSocketNotification(notification,payload);}
+			Log.log("config="+self.config.mode.toUpperCase());
+			if(self.config.mode.toUpperCase()==="HIDE" && payload.status === true){
 				if( sender.name == "MMM-AssistantMk2" && payload.triggerHide === true){
 					//
 					Log.log("MMM-AssistantMk2 says go to sleep");
@@ -92,7 +95,7 @@ Module.register("MMM-SleepWake",{
 						if(payload.modules.indexOf(module.identifier) !== -1)
 						{
 							// save it
-							v_self1.previously_hidden.push(module.identifier);
+							self.previously_hidden.push(module.identifier);
 						}
 					});
 				}
@@ -102,21 +105,21 @@ Module.register("MMM-SleepWake",{
 		  if(sender.name == 'MMM-PIR-Sensor'){
 				if(payload == true){
 					Log.log("received notice user around")
-					v_self1.sendSocketNotification("END_SLEEP");
+					self.sendSocketNotification("END_SLEEP");
 				}
 				else{
 					Log.log("received notice user no longer around")
-				  v_self1.sendSocketNotification("START_SLEEP");
+				  self.sendSocketNotification("START_SLEEP");
 				}
 			}
 			break;
 		case 'MONITOR_ACTION':
 			if(sender.name =='MMM-AlexaControl'){
 				if(payload == 'SLEEP_WAKE'){
-					v_self1.sendSocketNotification("END_SLEEP");
+					self.sendSocketNotification("END_SLEEP");
 				}
 				else{
-					v_self1.sendSocketNotification("START_SLEEP");
+					self.sendSocketNotification("START_SLEEP");
 				}
 			}
 		    break;
