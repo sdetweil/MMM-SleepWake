@@ -24,8 +24,10 @@ you can use the github motion project to provide motion detection events, this m
     ```
     {
         module: 'MMM-SleepWake',
-        delay:  15,               // default
-        mode:  see below
+        config:{
+           delay:  15,               // default
+           mode:  see below
+        }
     }
     ```
 
