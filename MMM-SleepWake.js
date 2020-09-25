@@ -4,6 +4,7 @@ Module.register("MMM-SleepWake",{
 	previously_hidden: [],
 	defaults: {
 		delay: 15,
+		source: 'external',
 		mode:  "hide",
 		ndetectionDir: "/motion",
 		ndetectionFile: "detected",
