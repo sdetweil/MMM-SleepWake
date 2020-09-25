@@ -39,7 +39,7 @@ module.exports = NodeHelper.create({
 		case "CONFIG":
 			self.config=payload;
 			self.timeractive=setTimeout(()=>{self.noUser(self)},self.config.delay*(60*1000));
-			if(self.config.source.toUpperCase() === "EXTERNAL"){
+			if(true) { //          if(self.config.source.toUpperCase() === "EXTERNAL"){
 				exec("/bin/chmod +x "+path.join(__dirname,"external_motion"), function (error, stdout, stderr) {
 					if(error!=null)
 					{
