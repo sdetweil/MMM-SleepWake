@@ -52,15 +52,15 @@ all options are case insensitive, (all lower, mixed or all uppercase supported)
 
 configure the github motion project (or whatever method you want to detect motion) to write a file for motion start or end.
 
-like this (motion.conf lines), below replace {userid} with the userid under which MagicMirror will be executing (typically 'pi' on Raspberry PI devices)
+like this (motion.conf lines), below (without the . in front) replace {userid} with the userid under which MagicMirror will be executing (typically 'pi' on Raspberry PI devices)
 
 *# Command to be executed when an event starts. (default: none)
 *# An event starts at first motion detected after a period of no motion defined by event_gap
-* on_event_start /home/{userid}/MagicMirror/modules/MMM-SleepWake/external_motion started
+ on_event_start /home/{userid}/MagicMirror/modules/MMM-SleepWake/external_motion started
 
 *# Command to be executed when an event ends after a period of no motion
 *# (default: none). The period of no motion is defined by option event_gap.
-* on_event_end /home/{userid}/MagicMirror/modules/MMM-SleepWake/external_motion ended
+ on_event_end /home/{userid}/MagicMirror/modules/MMM-SleepWake/external_motion ended
 
 I have submitted changes to the MMM-voice and HelloLucy projects to help communicate between our modules,
 that way voice initiated sleep (go to sleep) and motion initiated wakeup will restore the mirror to the prior state (and vice versa)
