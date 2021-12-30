@@ -12,6 +12,8 @@ Module.register("MMM-SleepWake",{
 		pi_on: "/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7",
 		dpms_off: "xset dpms force off",
 		dpms_on: "xset dpms force on",
+		cec_on:"echo on 0 | cec-client -s",
+		cec_off:"echo standby 0 | cec-client -s",
 		debug: true
 	},
 

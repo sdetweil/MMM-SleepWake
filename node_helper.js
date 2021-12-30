@@ -160,6 +160,17 @@ module.exports = NodeHelper.create({
 						}
 					});
 					break;
+				case "CEC":
+					if(self.config.debug)
+				 		console.log("using CEC approach ()='"+self.config.cec_off+"'")
+					/////////// Turns off laptop display and desktop PC with DVI  @ Mykle ///////////////
+					exec(self.config.cec_off,  function (error, stdout, stderr) {
+						if(error!=null)
+						{
+							console.log(self.config.cec_off+" failed "+JSON.stringify(error));
+						}
+					});
+					break;
 				}
 			}
 			else{
@@ -202,6 +213,17 @@ module.exports = NodeHelper.create({
 						if(error!=null)
 						{
 							console.log(self.config.dpms_on +" failed "+JSON.stringify(error));
+						}
+					});
+					break;
+				case "CEC":
+					/////////// Turns on laptop display and desktop PC with DVI @ Mykle ///////////////
+					if(self.config.debug)
+						console.log("waking up using CEC approach='"+self.config.cec_on+"'")
+					exec(self.config.cec_on, function (error, stdout, stderr) {
+						if(error!=null)
+						{
+							console.log(self.config.cec_on +" failed "+JSON.stringify(error));
 						}
 					});
 					break;
