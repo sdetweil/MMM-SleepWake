@@ -47,8 +47,8 @@ all options are case insensitive, (all lower, mixed or all uppercase supported)
 | `pi_off`| `OPTIONAL` |default: "/opt/vc/bin/tvservice -o"|command string to execute when the pi should turn on the hdmi output|
 |`dpms_on`|`OPTIONAL`| default: "xset dpms force on" |command string to execute when the pi should turn on the hdmi output using xset|
 |`dpms_off`|`OPTIONAL`| default: "xset dpms force off" |command string to execute when the pi should turn on the hdmi output using xset|
-|`cec_on`|`OPTIONAL`| default: "echo on 0 | cec-client -s" |command string to execute when the pi should turn on the hdmi device using cec-client|
-|`cec_off`|`OPTIONAL`| default: "echo standby 0 | cec-client -s" |command string to execute when the pi should turn off the hdmi device using cec-client|
+|`cec_on`|`OPTIONAL`| default: "echo on 0 \| cec-client -s" |command string to execute when the pi should turn on the hdmi device using cec-client|
+|`cec_off`|`OPTIONAL`| default: "echo standby 0 \| cec-client -s" |command string to execute when the pi should turn off the hdmi device using cec-client|
 | debug | `OPTIONAL`| false| enable logging of actions and events |
 
 ## Usage
