@@ -135,7 +135,7 @@ module.exports = NodeHelper.create({
 				case "PI":
 					if(self.config.debug)
 				  	console.log("using PI approach (tvservice)='"+self.config.pi_off+"'")
-					exec(self.config.pi_off,  function (error, stdout, stderr) {
+						exec(self.config.pi_off,  function (error, stdout, stderr) {
 						if(error!=null)
 						{
 							console.log(self.config.pi_off +" failed "+JSON.stringify(error));

@@ -54,7 +54,7 @@ Module.register("MMM-SleepWake",{
 	PIR_Loaded: function(){
 		let rc=false;
 		MM.getModules().enumerate((module) => {
-			if(module.name=="MMM-PIR-Sensor"){
+			if(module.name.startsWith("MMM-PIR-Sensor"){
 				rc=true;
 			}
 		});
@@ -80,7 +80,7 @@ Module.register("MMM-SleepWake",{
 			break;
 		case "STAND_BY":
 			Log.log("received notification about sleep from "+ sender.name);
-			if(sender.name=="MMM-voice" || sender.name=="MMM-PIR-Sensor")
+			if(sender.name=="MMM-voice" || sender.name=="MMM-PIR-Sensor" || sender.name=="MMM-PIR-Sensor-Lite" )
 				{self.sendSocketNotification(notification,payload);}
 			Log.log("config="+self.config.mode.toUpperCase());
 			if(self.config.mode.toUpperCase()==="HIDE" && payload.status === true){
@@ -104,7 +104,7 @@ Module.register("MMM-SleepWake",{
 			}
 			break;
 		case 'USER_PRESENCE':
-		  if(sender.name == 'MMM-PIR-Sensor'){
+		  if(sender.name == 'MMM-PIR-Sensor' || sender.name=="MMM-PIR-Sensor-Lite"){
 				if(payload == true){
 					Log.log("received notice user around")
 					self.sendSocketNotification("END_SLEEP");
