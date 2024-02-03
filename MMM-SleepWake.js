@@ -1,4 +1,4 @@
-
+9
 
 Module.register("MMM-SleepWake",{
 	previously_hidden: [],
@@ -54,7 +54,7 @@ Module.register("MMM-SleepWake",{
 	PIR_Loaded: function(){
 		let rc=false;
 		MM.getModules().enumerate((module) => {
-			if(module.name.startsWith("MMM-PIR-Sensor"){
+			if(module.name.startsWith("MMM-PIR-Sensor")){
 				rc=true;
 			}
 		});
