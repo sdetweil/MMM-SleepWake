@@ -1,11 +1,14 @@
-9
-
 Module.register("MMM-SleepWake",{
 	previously_hidden: [],
 	defaults: {
 		delay: 15,
 		source: 'external',
 		mode:  "hide",
+		photoframe_start_notification:{ notification:"", payload:""}, // using MMM-pages { notification:"SHOW_HIDDEN_PAGE", payload:"xxxx"} xxxx is the hidden page name
+ 		photoframe_end_notification:{ notification:"", payload:""}, // using MMM-pages three choices,
+ 																			 // { notification:"LEAVE_HIDDEN_PAGE", payload:null }, // goes to the last page showing before going to hidden page
+ 																			 // { notification:"PAGE_CHANGED", payload:number },  // goes to specfic page
+ 																			 // { notification:"HOME_PAGE", payload:null }  // goes to the home page def or 1st page
 		ndetectionDir: "/motion",
 		ndetectionFile: "detected",
 		pi_off: "/opt/vc/bin/tvservice -o",
@@ -26,28 +29,40 @@ Module.register("MMM-SleepWake",{
 		switch(notification)
 		{
 		case "SLEEP_HIDE":
-			MM.getModules().enumerate((module) => {
-				// if the module is already hidden
-				if(module.hidden==true)
-					// save it for wake up
-					{self.previously_hidden.push(module.identifier);}
-				else
-					// hide this module
-					{module.hide(1000);}
-			});
+			if(this.config.mode.toLowerCase()==='photoframe'){
+				if(this.config.photoframe_on_notification){
+					this.sendNotification(this.config.photoframe_on_notification.notification,this.config.photoframe_on_notification.payload)
+				}
+			} else {
+				MM.getModules().enumerate((module) => {
+					// if the module is already hidden
+					if(module.hidden==true)
+						// save it for wake up
+						{self.previously_hidden.push(module.identifier);}
+					else
+						// hide this module
+						{module.hide(1000);}
+				});
+			}
 			break;
 		case "SLEEP_WAKE":
-					 MM.getModules().enumerate((module) => {
-				// if this module was NOT in the previously hidden list
-				//Log.log("looking for module ="+module.name+" in previous list");
-				if(self.previously_hidden.indexOf(module.identifier)==-1)
-				{
-					// show it
-					module.show(1000);
+			if(this.config.mode.toLowerCase()==='photoframe'){
+				if(this.config.photoframe_on_notification){
+					this.sendNotification(this.config.photoframe_exit_notification.notification,this.config.photoframe_exit_notification.payload)
 				}
-					 });
-			// clear the list, if any
-			self.previously_hidden = [];
+			} else {
+				MM.getModules().enumerate((module) => {
+					// if this module was NOT in the previously hidden list
+					//Log.log("looking for module ="+module.name+" in previous list");
+					if(self.previously_hidden.indexOf(module.identifier)==-1)
+					{
+						// show it
+						module.show(1000);
+					}
+						 });
+				// clear the list, if any
+				self.previously_hidden = [];
+			}
 			break;
 		}
 	},
@@ -70,7 +85,7 @@ Module.register("MMM-SleepWake",{
 		switch(notification){
 		case "ALL_MODULES_STARTED":
 			//self=this;
-			if(self.config.mode.toUpperCase()!=="PIR" || !this.PIR_Loaded())
+			if(self.config.mode.toUpperCase()!=="PI" || !this.PIR_Loaded())
 			{
 				//Log.log("SleepWake config="+JSON.stringify(self.config));
 				self.sendSocketNotification("config", self.config);
