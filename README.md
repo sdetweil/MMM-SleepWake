@@ -43,7 +43,7 @@ all options are case insensitive, (all lower, mixed or all uppercase supported)
 |  |  | 'DPMS' |  use the exec DMPS command to turn off the monitor source (not on pi, or not hdmi)
 |  |  | 'CEC' |  use the exec cec-client command to turn off the monitor source (not on pi, or not hdmi)
 |  |  | `'HIDE'` |  hide all module content, if display is on EnergyStar device that shows ugly 'no signal' screen for the other two choices (`default`)
-|  |  | `PHOTOFRAME` | surface a particular page (on page based systems) when people aren't around, return to normal when people are detected
+|  |  | `'PHOTOFRAME'` | surface a particular page (on page based systems) when people aren't around, return to normal when people are detected
 |`photoframe_start_notification` | `OPTIONAL` | `null` | notification to be received on request to start photoframe mode. <br> maybe when no one is around,<br> must be specified if the photoframe  option is used `{"notification":"xxxxx","payload":"yyyy"}` <br><br>on the payload, true, false and null must not be quoted|  
 |`photoframe_end_notification` | `OPTIONAL` | `null` | notification to be received on request to end photoframe mode,<br> maybe when someone has appoached the mirror, <br>must be specified if the photoframe  option is used `{"notification":"xxxxx","payload":"yyyy" }`  <br><br>on the payload, true, false and null must not be quoted |  
 | `pi_on` | `OPTIONAL`|default: "/opt/vc/bin/tvservice -p && sudo chvt 6 && sudo chvt 7" | command string to execute when the pi should turn on the hdmi output|
