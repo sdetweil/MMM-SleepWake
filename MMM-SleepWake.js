@@ -31,7 +31,7 @@ Module.register("MMM-SleepWake",{
 		case "SLEEP_HIDE":
 			if(this.config.mode.toLowerCase()==='photoframe'){
 				if(this.config.photoframe_on_notification){
-					this.sendNotification(this.config.photoframe_on_notification.notification,this.config.photoframe_on_notification.payload)
+					this.sendNotification(this.config.photoframe_start_notification.notification,this.config.photoframe_start_notification.payload)
 				}
 			} else {
 				MM.getModules().enumerate((module) => {
@@ -48,7 +48,7 @@ Module.register("MMM-SleepWake",{
 		case "SLEEP_WAKE":
 			if(this.config.mode.toLowerCase()==='photoframe'){
 				if(this.config.photoframe_on_notification){
-					this.sendNotification(this.config.photoframe_exit_notification.notification,this.config.photoframe_exit_notification.payload)
+					this.sendNotification(this.config.photoframe_end_notification.notification,this.config.photoframe_end_notification.payload)
 				}
 			} else {
 				MM.getModules().enumerate((module) => {
