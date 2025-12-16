@@ -372,27 +372,27 @@
               "items": [
                 {
                   "type": "fieldset",
-                  "title": "photoframe_on_notification",
+                  "title": "photoframe_start_notification",
                   "expandable": false,
                   "items": [
                     {
-                      "key": "MMM-SleepWake.config.photoframe_on_notification.notification"
+                      "key": "MMM-SleepWake.config.photoframe_start_notification.notification"
                     },
                     {
-                      "key": "MMM-SleepWake.config.photoframe_on_notification.payload"
+                      "key": "MMM-SleepWake.config.photoframe_start_notification.payload"
                     }
                   ]
                 },
                 {
                   "type": "fieldset",
-                  "title": "photoframe_exit_notification",
+                  "title": "photoframe_end_notification",
                   "expandable": false,
                   "items": [
                     {
-                      "key": "MMM-SleepWake.config.photoframe_exit_notification.notification"
+                      "key": "MMM-SleepWake.config.photoframe_end_notification.notification"
                     },
                     {
-                      "key": "MMM-SleepWake.config.photoframe_exit_notification.payload"
+                      "key": "MMM-SleepWake.config.photoframe_end_notification.payload"
                     }
                   ]
                 }
